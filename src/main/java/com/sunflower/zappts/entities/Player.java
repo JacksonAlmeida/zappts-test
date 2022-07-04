@@ -14,7 +14,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
@@ -41,6 +43,10 @@ public class Player implements Serializable, UserDetails {
 			)
 	private Set<Role> roles = new HashSet<>();
 
+	@Transient
+	@OneToMany(mappedBy = "id.card")
+	private Set<ListCard> listCards = new HashSet<>();
+	
 	public Player() {
 	}
 
@@ -82,6 +88,14 @@ public class Player implements Serializable, UserDetails {
 		this.roles = roles;
 	}
 
+	public Set<Card> getCards() {
+		Set<Card> set = new HashSet<>();
+		for (ListCard x : listCards) {
+			set.add(x.getCard());
+		}
+		return set;
+	}
+	
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return roles.stream().map(x -> new SimpleGrantedAuthority(x.getRoleName())).collect(Collectors.toList());
