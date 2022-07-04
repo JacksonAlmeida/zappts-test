@@ -12,23 +12,22 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.sunflower.zappts.dto.RoleDTO;
 
 @Entity
 @Table(name = "tb_role")
-public class Role implements Serializable{
+public class Role implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	private String roleName;
-	
+
 	@JsonIgnore
 	@ManyToMany(mappedBy = "roles")
 	Set<Player> players = new HashSet<>();
-	
+
 	public Role() {
 	}
 
@@ -60,5 +59,5 @@ public class Role implements Serializable{
 	public void setPlayers(Set<Player> players) {
 		this.players = players;
 	}
-	
+
 }

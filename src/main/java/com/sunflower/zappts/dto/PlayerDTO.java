@@ -1,14 +1,17 @@
 package com.sunflower.zappts.dto;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
 import com.sunflower.zappts.entities.Player;
 
-public class PlayerDTO {
+public class PlayerDTO implements Serializable {
 
+	private static final long serialVersionUID = 1L;
 	private long id;
 	private String name;
+	private String password;
 	private Set<RoleDTO> rolesDTO = new HashSet<>();
 
 	public PlayerDTO() {
@@ -41,8 +44,11 @@ public class PlayerDTO {
 		this.name = name;
 	}
 
+	public String getPassword() {
+		return password;
+	}
+
 	public void setRolesDTO(Set<RoleDTO> rolesDTO) {
 		this.rolesDTO = rolesDTO;
 	}
-
 }

@@ -1,13 +1,12 @@
 package com.sunflower.zappts.dto;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.io.Serializable;
 
 import com.sunflower.zappts.entities.Role;
 
-public class RoleDTO {
+public class RoleDTO implements Serializable{
 
+	private static final long serialVersionUID = 1L;
 	private long id;
 	private String roleName;
 

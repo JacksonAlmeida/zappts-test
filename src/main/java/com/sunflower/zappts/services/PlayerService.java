@@ -9,6 +9,9 @@ import javax.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.sunflower.zappts.dto.PlayerDTO;
@@ -18,7 +21,7 @@ import com.sunflower.zappts.services.exceptions.DatabaseException;
 import com.sunflower.zappts.services.exceptions.ResourceNotFoundException;
 
 @Service
-public class PlayerService {
+public class PlayerService implements UserDetailsService {
 
 	@Autowired
 	private PlayerRepository playerRepository;
@@ -60,5 +63,14 @@ public class PlayerService {
 	private void updateData(Player entity, Player obj) {
 		entity.setName(obj.getName());
 		entity.setPassword(obj.getPassword());
+	}
+
+	@Override
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		Optional<Player> p1 = playerRepository.findByName(username);
+		if (p1.isPresent()) {
+			return p1.get();
+		} else
+			throw new UsernameNotFoundException("Dados inválidos");
 	}
 }
