@@ -7,6 +7,7 @@ import javax.persistence.Embeddable;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sunflower.zappts.entities.Card;
 import com.sunflower.zappts.entities.Player;
 
@@ -15,10 +16,12 @@ public class ListCardPk implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "card_id")
 	private Card card;
 
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "player_id")
 	private Player player;

@@ -37,6 +37,7 @@ public class ListCard implements Serializable {
 		id.setPlayer(player);
 	}
 
+	@JsonIgnore
 	public Card getCard() {
 		return id.getCard();
 	}

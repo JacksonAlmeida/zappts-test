@@ -14,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sunflower.zappts.enums.Language;
 import com.sunflower.zappts.enums.StatusCard;
 
@@ -22,10 +23,11 @@ import com.sunflower.zappts.enums.StatusCard;
 public class Card implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
+
 	private String name;
 	private String edition;
 	private Integer language;
