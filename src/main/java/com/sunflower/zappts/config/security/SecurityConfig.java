@@ -66,8 +66,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		}
 		http.cors().and().csrf().disable();
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-		http.authorizeHttpRequests().antMatchers(HttpMethod.GET, "/api/cards/**").permitAll()
-				.antMatchers(HttpMethod.GET, "/api/players/**").permitAll()
+		http.authorizeHttpRequests()
+				.antMatchers(HttpMethod.POST, "/api/cards/**").permitAll()
+				.antMatchers(HttpMethod.POST, "/api/roles/newrole").permitAll()
+				.antMatchers(HttpMethod.POST, "/api/players/**").permitAll()
 				.antMatchers(HttpMethod.POST, "/api/auth/login").permitAll().anyRequest().authenticated().and()
 				.addFilterBefore(new AuthenticationTokenFilter(tokenService, playerRepository),
 						UsernamePasswordAuthenticationFilter.class);
