@@ -3,6 +3,7 @@ package com.sunflower.zappts.resources;
 import java.net.URI;
 import java.util.List;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -27,8 +28,11 @@ public class CardResource {
 	private CardService cardService;
 
 	@PostMapping(value = "/newcards")
-	public ResponseEntity<Void> save(@RequestBody Card obj) {
-		obj = cardService.insert(obj);
+	public ResponseEntity<Void> save(@RequestBody CardDTO obj) {
+		Card card = new Card();
+
+		BeanUtils.copyProperties(obj, card);
+		cardService.insert(card);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
 		return ResponseEntity.created(uri).build();
 	}
