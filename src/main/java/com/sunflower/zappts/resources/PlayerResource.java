@@ -3,6 +3,7 @@ package com.sunflower.zappts.resources;
 import java.net.URI;
 import java.util.List;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -25,10 +26,12 @@ public class PlayerResource {
 
 	@Autowired
 	private PlayerService playerService;
-
+	
 	@PostMapping(value = "/newplayer")
-	public ResponseEntity<Void> save(@RequestBody Player obj) {
-		obj = playerService.insert(obj);
+	public ResponseEntity<Void> save(@RequestBody PlayerDTO obj) {
+		Player p1 = new Player();
+		BeanUtils.copyProperties(obj, p1);
+		playerService.insert(p1);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
 		return ResponseEntity.created(uri).build();
 	}
@@ -40,8 +43,8 @@ public class PlayerResource {
 	}
 
 	@GetMapping(value = "/{id}")
-	public ResponseEntity<Player> findById(@PathVariable long id) {
-		Player obj = playerService.findById(id);
+	public ResponseEntity<PlayerDTO> findById(@PathVariable long id) {
+		PlayerDTO obj = playerService.findById(id);
 		return ResponseEntity.ok().body(obj);
 	}
 

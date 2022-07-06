@@ -12,6 +12,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.sunflower.zappts.dto.PlayerDTO;
@@ -25,8 +26,12 @@ public class PlayerService implements UserDetailsService {
 
 	@Autowired
 	private PlayerRepository playerRepository;
+	
+	@Autowired
+	private PasswordEncoder encoder;
 
 	public Player insert(Player player) {
+		player.setPassword(encoder.encode(player.getPassword()));
 		return playerRepository.save(player);
 	}
 
@@ -35,9 +40,14 @@ public class PlayerService implements UserDetailsService {
 		return obj.stream().map(x -> new PlayerDTO(x)).collect(Collectors.toList());
 	}
 
-	public Player findById(long id) {
+	public PlayerDTO findById(long id) {
 		Optional<Player> obj = playerRepository.findById(id);
-		return obj.orElseThrow(() -> new ResourceNotFoundException(id));
+		if(obj.isPresent()) {
+			return obj.stream().map(x -> new PlayerDTO()).findAny().get();
+		} else {
+			Optional<PlayerDTO> dto = Optional.empty();
+			return dto.orElseThrow(() -> new ResourceNotFoundException(id));
+		}
 	}
 
 	public void delete(long id) {
